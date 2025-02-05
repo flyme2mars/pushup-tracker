@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Line } from 'react-chartjs-2';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
@@ -76,7 +75,7 @@ export default function Home() {
       loadUserData(user.id);
     };
     checkUser();
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     // Update motivation message based on progress
@@ -313,7 +312,7 @@ export default function Home() {
             />
           </div>
           <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
-            Today's Goal: {count}/{dailyGoal}
+            Today&apos;s Goal: {count}/{dailyGoal}
             <button
               onClick={() => setIsEditingGoal(true)}
               className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
@@ -412,7 +411,7 @@ export default function Home() {
             View Calendar 📅
           </Link>
           <div className="text-center text-gray-600 dark:text-gray-300 text-sm italic">
-            "Success is not final, failure is not fatal: it is the courage to continue that counts."
+            &quot;Success is not final, failure is not fatal: it is the courage to continue that counts.&quot;
           </div>
         </div>
       </main>

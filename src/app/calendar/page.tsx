@@ -26,7 +26,7 @@ export default function Calendar() {
       loadCalendarData(user.id);
     };
     checkUser();
-  }, [currentMonth, viewType]);
+  }, [currentMonth, viewType, router, loadCalendarData]);
 
   const loadCalendarData = async (userId: string) => {
     const startDate = viewType === 'month'
