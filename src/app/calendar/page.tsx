@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
@@ -16,19 +16,7 @@ export default function Calendar() {
   const [viewType, setViewType] = useState<'month' | 'year'>('month');
   const [calendarData, setCalendarData] = useState<DayData[]>([]);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push('/auth');
-        return;
-      }
-      loadCalendarData(user.id);
-    };
-    checkUser();
-  }, [currentMonth, viewType, router, loadCalendarData]);
-
-  const loadCalendarData = async (userId: string) => {
+  const loadCalendarData = useCallback(async (userId: string) => {
     const startDate = viewType === 'month'
       ? new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
       : new Date(currentMonth.getFullYear(), 0, 1);
@@ -52,7 +40,19 @@ export default function Calendar() {
       }));
       setCalendarData(formattedData);
     }
-  };
+  }, [currentMonth, viewType]);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push('/auth');
+        return;
+      }
+      loadCalendarData(user.id);
+    };
+    checkUser();
+  }, [router, loadCalendarData]);
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();

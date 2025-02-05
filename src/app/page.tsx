@@ -75,7 +75,7 @@ export default function Home() {
       loadUserData(user.id);
     };
     checkUser();
-  }, [router]);
+  }, [router, loadUserData]);
 
   useEffect(() => {
     // Update motivation message based on progress
@@ -162,7 +162,7 @@ export default function Home() {
 
     // Calculate streak
     let currentStreak = 0;
-    let date = new Date();
+    const date = new Date();
     while (true) {
       const dateStr = date.toISOString().split('T')[0];
       const record = weekData?.find(d => d.created_at.startsWith(dateStr));
@@ -397,7 +397,7 @@ export default function Home() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{count}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Today's Total</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Today&apos;s Total</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{Math.round((count/dailyGoal) * 100)}%</div>
