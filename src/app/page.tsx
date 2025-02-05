@@ -47,60 +47,6 @@ export default function Home() {
     }]
   });
 
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Past Week Progress'
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
-  };
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push('/auth');
-        return;
-      }
-      loadUserData(user.id);
-    };
-    checkUser();
-  }, [router, loadUserData]);
-
-  useEffect(() => {
-    // Update motivation message based on progress
-    const progress = (count / dailyGoal) * 100;
-    if (count === 0) {
-      setMessage('Ready to start? Let\'s crush it! 💪');
-    } else if (progress < 25) {
-      setMessage('Great start! Keep pushing! 🚀');
-    } else if (progress < 50) {
-      setMessage('You\'re making progress! 🔥');
-    } else if (progress < 75) {
-      setMessage('More than halfway there! 🌟');
-    } else if (progress < 100) {
-      setMessage('Almost there! Finish strong! ✨');
-    } else {
-      setMessage('Daily goal achieved! You\'re amazing! 🏆');
-    }
-
-    // Reset animation state
-    if (showAnimation) {
-      const timer = setTimeout(() => setShowAnimation(false), 500);
-      return () => clearTimeout(timer);
-    }
-  }, [count, dailyGoal, showAnimation]);
-
   const loadUserData = async (userId: string) => {
     // Load user's goal
     const { data: goalData } = await supabase
@@ -172,6 +118,60 @@ export default function Home() {
     }
     setStreak(currentStreak);
   };
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push('/auth');
+        return;
+      }
+      loadUserData(user.id);
+    };
+    checkUser();
+  }, [router]);
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Past Week Progress'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
+
+  useEffect(() => {
+    // Update motivation message based on progress
+    const progress = (count / dailyGoal) * 100;
+    if (count === 0) {
+      setMessage('Ready to start? Let\'s crush it! 💪');
+    } else if (progress < 25) {
+      setMessage('Great start! Keep pushing! 🚀');
+    } else if (progress < 50) {
+      setMessage('You\'re making progress! 🔥');
+    } else if (progress < 75) {
+      setMessage('More than halfway there! 🌟');
+    } else if (progress < 100) {
+      setMessage('Almost there! Finish strong! ✨');
+    } else {
+      setMessage('Daily goal achieved! You\'re amazing! 🏆');
+    }
+
+    // Reset animation state
+    if (showAnimation) {
+      const timer = setTimeout(() => setShowAnimation(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [count, dailyGoal, showAnimation]);
 
   const addPushups = async () => {
     const numPushups = parseInt(inputCount) || 0;
