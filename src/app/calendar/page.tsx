@@ -92,15 +92,15 @@ export default function Calendar() {
   const renderMonthView = () => {
     const days = getDaysInMonth(currentMonth);
     return (
-      <div className="grid grid-cols-7 gap-2">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="text-center text-sm font-medium text-gray-600 dark:text-gray-400">
-            {day}
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
+          <div key={`header-${index}`} className="text-center text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
+            {day[0]}
           </div>
         ))}
         
         {Array.from({ length: new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay() }).map((_, i) => (
-          <div key={`empty-${i}`} className="h-16 rounded-lg"></div>
+          <div key={`empty-${currentMonth.getFullYear()}-${currentMonth.getMonth()}-${i}`} className="h-12 sm:h-16 rounded-lg"></div>
         ))}
 
         {days.map(day => {
@@ -111,11 +111,11 @@ export default function Calendar() {
           return (
             <div
               key={dateStr}
-              className={`h-16 rounded-lg ${getHeatmapColor(count)} flex flex-col items-center justify-center transition-colors cursor-pointer hover:opacity-75`}
+              className={`h-12 sm:h-16 rounded-lg ${getHeatmapColor(count)} flex flex-col items-center justify-center transition-colors cursor-pointer hover:opacity-75`}
             >
-              <div className="text-sm font-medium text-gray-800 dark:text-gray-200">{day.getDate()}</div>
+              <div className="text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-200">{day.getDate()}</div>
               {count > 0 && (
-                <div className="text-xs text-gray-600 dark:text-gray-300">{count} pushups</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-300">{count}</div>
               )}
             </div>
           );
@@ -159,37 +159,37 @@ export default function Calendar() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
-      <main className="max-w-4xl mx-auto pt-12">
-        <div className="flex justify-between items-center mb-8">
-          <Link href="/" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+      <main className="max-w-4xl mx-auto pt-6 sm:pt-12">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 mb-6 sm:mb-8">
+          <Link href="/" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm sm:text-base">
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Progress Calendar</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white order-first sm:order-none">Progress Calendar</h1>
           <div className="flex gap-2">
             <button
               onClick={() => setViewType('month')}
-              className={`px-3 py-1 rounded-lg ${viewType === 'month' ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-300'}`}
+              className={`px-2 sm:px-3 py-1 rounded-lg text-sm ${viewType === 'month' ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-300'}`}
             >
               Month
             </button>
             <button
               onClick={() => setViewType('year')}
-              className={`px-3 py-1 rounded-lg ${viewType === 'year' ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-300'}`}
+              className={`px-2 sm:px-3 py-1 rounded-lg text-sm ${viewType === 'year' ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-300'}`}
             >
               Year
             </button>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-          <div className="flex justify-between items-center mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-3 sm:p-6">
+          <div className="flex justify-between items-center mb-4 sm:mb-6">
             <button
               onClick={previousMonth}
               className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
             >
               ←
             </button>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
               {viewType === 'month' 
                 ? currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })
                 : currentMonth.getFullYear().toString()
@@ -208,26 +208,26 @@ export default function Calendar() {
 
         <div className="mt-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
           <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Activity Legend</h3>
-          <div className="flex items-center gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-gray-100 dark:bg-gray-800"></div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">No activity</span>
+              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-gray-100 dark:bg-gray-800"></div>
+              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">No activity</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-blue-100 dark:bg-blue-900"></div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">1-19 pushups</span>
+              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-blue-100 dark:bg-blue-900"></div>
+              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">1-19</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-blue-300 dark:bg-blue-700"></div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">20-39 pushups</span>
+              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-blue-300 dark:bg-blue-700"></div>
+              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">20-39</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-blue-500 dark:bg-blue-500"></div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">40-59 pushups</span>
+              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-blue-500 dark:bg-blue-500"></div>
+              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">40-59</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-blue-700 dark:bg-blue-300"></div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">60+ pushups</span>
+              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-blue-700 dark:bg-blue-300"></div>
+              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">60+</span>
             </div>
           </div>
         </div>
