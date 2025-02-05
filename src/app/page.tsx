@@ -36,7 +36,18 @@ export default function Home() {
   const [showAnimation, setShowAnimation] = useState(false);
   const [isEditingGoal, setIsEditingGoal] = useState(false);
   const [newGoal, setNewGoal] = useState('');
-  const [pastWeekData, setPastWeekData] = useState({
+  interface ChartData {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      fill: boolean;
+      borderColor: string;
+      tension: number;
+    }[];
+  }
+  
+  const [pastWeekData, setPastWeekData] = useState<ChartData>({
     labels: [],
     datasets: [{
       label: 'Daily Pushups',
